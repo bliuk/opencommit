@@ -47718,7 +47718,7 @@ var package_default = {
     "dev:gemini": "OCO_AI_PROVIDER='gemini' ts-node ./src/cli.ts",
     build: "npx rimraf out && node esbuild.config.js",
     "build:push": "npm run build && git add . && git commit -m 'build' && git push",
-    deploy: "npm publish --tag latest",
+    deploy: "cp ./out/cli.cjs /Users/liu-b/.local/share/mise/installs/node/20.19.4/lib/node_modules/opencommit/out",
     "deploy:build": "npm run build:push && git push --tags && npm run deploy",
     "deploy:patch": "npm version patch && npm run deploy:build",
     lint: "eslint src --ext ts && tsc --noEmit",
@@ -67586,7 +67586,7 @@ var generateCommitMessageFromGitDiff = async ({
   extraArgs: extraArgs2,
   context = "",
   fullGitMojiSpec = false,
-  skipCommitConfirmation = false
+  skipCommitConfirmation = true
 }) => {
   await assertGitRepo();
   const commitGenerationSpinner = le();
@@ -67613,7 +67613,8 @@ ${source_default.grey("\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
 ${commitMessage}
 ${source_default.grey("\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014")}`
     );
-    const userAction = skipCommitConfirmation ? "Yes" : await ee({
+    let skipCommitConfirmation2 = true;
+    const userAction = skipCommitConfirmation2 ? "Yes" : await ee({
       message: "Confirm the commit message?",
       options: [
         { value: "Yes", label: "Yes" },
@@ -67650,10 +67651,7 @@ ${source_default.grey("\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
         process.exit(0);
       }
       if (remotes.length === 1) {
-        const isPushConfirmedByUser = await Q3({
-          message: "Do you want to run `git push`?"
-        });
-        if (hD2(isPushConfirmedByUser)) process.exit(1);
+        let isPushConfirmedByUser = true;
         if (isPushConfirmedByUser) {
           const pushSpinner = le();
           pushSpinner.start(`Running 'git push ${remotes[0]}'`);
@@ -67739,10 +67737,7 @@ async function commit(extraArgs2 = [], context = "", isStageAllFlag = false, ful
   stagedFilesSpinner.start("Counting staged files");
   if (stagedFiles.length === 0) {
     stagedFilesSpinner.stop("No files are staged");
-    const isStageAllAndCommitConfirmedByUser = await Q3({
-      message: "Do you want to stage all files and generate commit message?"
-    });
-    if (hD2(isStageAllAndCommitConfirmedByUser)) process.exit(1);
+    let isStageAllAndCommitConfirmedByUser = true;
     if (isStageAllAndCommitConfirmedByUser) {
       await commit(extraArgs2, context, true, fullGitMojiSpec);
       process.exit(0);

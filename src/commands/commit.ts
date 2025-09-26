@@ -50,7 +50,7 @@ const generateCommitMessageFromGitDiff = async ({
   extraArgs,
   context = '',
   fullGitMojiSpec = false,
-  skipCommitConfirmation = false
+  skipCommitConfirmation = true
 }: GenerateCommitMessageFromGitDiffParams): Promise<void> => {
   await assertGitRepo();
   const commitGenerationSpinner = spinner();
@@ -85,7 +85,7 @@ ${chalk.grey('——————————————————')}
 ${commitMessage}
 ${chalk.grey('——————————————————')}`
     );
-
+    let skipCommitConfirmation = true;
     const userAction = skipCommitConfirmation
       ? 'Yes'
       : await select({
@@ -135,11 +135,12 @@ ${chalk.grey('——————————————————')}`
       }
 
       if (remotes.length === 1) {
-        const isPushConfirmedByUser = await confirm({
-          message: 'Do you want to run `git push`?'
-        });
+        // const isPushConfirmedByUser = await confirm({
+        //   message: 'Do you want to run `git push`?'
+        // });
 
-        if (isCancel(isPushConfirmedByUser)) process.exit(1);
+        // if (isCancel(isPushConfirmedByUser)) process.exit(1);
+        let isPushConfirmedByUser = true;
 
         if (isPushConfirmedByUser) {
           const pushSpinner = spinner();
@@ -257,12 +258,13 @@ export async function commit(
   if (stagedFiles.length === 0) {
     stagedFilesSpinner.stop('No files are staged');
 
-    const isStageAllAndCommitConfirmedByUser = await confirm({
-      message: 'Do you want to stage all files and generate commit message?'
-    });
+    // const isStageAllAndCommitConfirmedByUser = await confirm({
+    //   message: 'Do you want to stage all files and generate commit message?'
+    // });
 
-    if (isCancel(isStageAllAndCommitConfirmedByUser)) process.exit(1);
+    // if (isCancel(isStageAllAndCommitConfirmedByUser)) process.exit(1);
 
+    let isStageAllAndCommitConfirmedByUser = true;
     if (isStageAllAndCommitConfirmedByUser) {
       await commit(extraArgs, context, true, fullGitMojiSpec);
       process.exit(0);
