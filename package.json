@@ -46,7 +46,7 @@
     "dev:gemini": "OCO_AI_PROVIDER='gemini' ts-node ./src/cli.ts",
     "build": "npx rimraf out && node esbuild.config.js",
     "build:push": "npm run build && git add . && git commit -m 'build' && git push",
-    "deploy": "cp ./out/cli.cjs /Users/liu-b/.local/share/mise/installs/node/20.19.4/lib/node_modules/opencommit/out",
+    "deploy": "cp ./out/cli.cjs /Users/liu-b/.local/share/mise/installs/node/22.20.0/lib/node_modules/opencommit/out",
     "deploy:build": "npm run build:push && git push --tags && npm run deploy",
     "deploy:patch": "npm version patch && npm run deploy:build",
     "lint": "eslint src --ext ts && tsc --noEmit",
