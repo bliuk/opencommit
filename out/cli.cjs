@@ -47718,7 +47718,7 @@ var package_default = {
     "dev:gemini": "OCO_AI_PROVIDER='gemini' ts-node ./src/cli.ts",
     build: "npx rimraf out && node esbuild.config.js",
     "build:push": "npm run build && git add . && git commit -m 'build' && git push",
-    deploy: "cp ./out/cli.cjs /Users/liu-b/.local/share/mise/installs/node/20.19.4/lib/node_modules/opencommit/out",
+    deploy: "cp ./out/cli.cjs /Users/liu-b/.local/share/mise/installs/node/22.20.0/lib/node_modules/opencommit/out",
     "deploy:build": "npm run build:push && git push --tags && npm run deploy",
     "deploy:patch": "npm version patch && npm run deploy:build",
     lint: "eslint src --ext ts && tsc --noEmit",
@@ -67670,14 +67670,7 @@ ${source_default.grey("\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2
         }
       } else {
         const skipOption = `don't push`;
-        const selectedRemote = await ee({
-          message: "Choose a remote to push to",
-          options: [...remotes, skipOption].map((remote) => ({
-            value: remote,
-            label: remote
-          }))
-        });
-        if (hD2(selectedRemote)) process.exit(1);
+        let selectedRemote = remotes[0];
         if (selectedRemote !== skipOption) {
           const pushSpinner = le();
           pushSpinner.start(`Running 'git push ${selectedRemote}'`);
