@@ -67934,36 +67934,6 @@ ${fileContent.toString()}`;
   }
 };
 
-// src/version.ts
-var getOpenCommitLatestVersion = async () => {
-  try {
-    const { stdout } = await execa("npm", ["view", "opencommit", "version"]);
-    return stdout;
-  } catch (_7) {
-    ce("Error while getting the latest version of opencommit");
-    return void 0;
-  }
-};
-
-// src/utils/checkIsLatestVersion.ts
-var checkIsLatestVersion = async () => {
-  const latestVersion = await getOpenCommitLatestVersion();
-  if (latestVersion) {
-    const currentVersion = package_default.version;
-    if (currentVersion !== latestVersion) {
-      ce(
-        source_default.yellow(
-          `
-You are not using the latest stable version of OpenCommit with new features and bug fixes.
-Current version: ${currentVersion}. Latest version: ${latestVersion}.
-\u{1F680} To update run: npm i -g opencommit@latest.
-        `
-        )
-      );
-    }
-  }
-};
-
 // src/migrations/_run.ts
 var import_fs5 = __toESM(require("fs"), 1);
 var import_os2 = require("os");
@@ -68146,7 +68116,6 @@ Z2(
   },
   async ({ flags }) => {
     await runMigrations();
-    await checkIsLatestVersion();
     if (await isHookCalled()) {
       prepareCommitMessageHook();
     } else {
