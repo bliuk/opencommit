@@ -66525,7 +66525,12 @@ var { OpenAIError: OpenAIError2, APIError: APIError4, APIConnectionError: APICon
 var OpenAiEngine = class {
   constructor(config7) {
     this.generateCommitMessage = async (messages) => {
-      const params = {
+      const isReasoningModel = /^(o\d|gpt-5)/.test(this.config.model);
+      const params = isReasoningModel ? {
+        model: this.config.model,
+        messages,
+        max_completion_tokens: this.config.maxTokensOutput
+      } : {
         model: this.config.model,
         messages,
         temperature: 0,

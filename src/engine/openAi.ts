@@ -36,13 +36,21 @@ export class OpenAiEngine implements AiEngine {
   public generateCommitMessage = async (
     messages: Array<OpenAI.Chat.Completions.ChatCompletionMessageParam>
   ): Promise<string | null> => {
-    const params = {
-      model: this.config.model,
-      messages,
-      temperature: 0,
-      top_p: 0.1,
-      max_tokens: this.config.maxTokensOutput
-    };
+    // Reasoning models (o-series, gpt-5) reject max_tokens and non-default sampling params.
+    const isReasoningModel = /^(o\d|gpt-5)/.test(this.config.model);
+    const params = isReasoningModel
+      ? {
+          model: this.config.model,
+          messages,
+          max_completion_tokens: this.config.maxTokensOutput
+        }
+      : {
+          model: this.config.model,
+          messages,
+          temperature: 0,
+          top_p: 0.1,
+          max_tokens: this.config.maxTokensOutput
+        };
 
     try {
       const REQUEST_TOKENS = messages
